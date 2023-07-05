@@ -1,0 +1,111 @@
+Start setting up the project, it will generate a package.json:
+  npm init -y
+
+Next, we'll install typescript:
+  npm install -D typescript
+
+We also need ts-node:
+  npm install -D ts-node
+
+For running a project we'll use nodemon:
+  npm install -D nodemon
+
+We need to configure typescript, and we'll do that by creating new file in root of our project called tsconfig.json, and we'll add the following:
+  {
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "baseUrl": "src",
+    "outDir": "dist",
+    "sourceMap": true,
+    "noImplicitAny": true,
+  },
+  "include": ["src/**/*"]
+  }
+
+Next, we'll create nodemon.json file also in the root of our project folder, so we can configure nodemon, and we'll add the following:
+  {
+  "watch": ["src"],
+  "ext": ".ts,.js",
+  "exec": "ts-node ./src/index.ts"
+  }
+
+To add a bit of a structure to our project we'll add src folder with index.ts file in it, and for the start just console.log() some text.
+
+In package.json we'll add new script under "scripts" for starting the nodemon:
+ "start": "nodemon",
+
+In terminal we'll type:
+  npm start
+...to see if its working
+
+Ok, typescript and ts-node are working thanks to nodemon and nodemon file with comands that we are now invoking in package.json, and life is good!
+
+Now we'll set up express server!
+We'll add imports to a index.ts file located under src folder:
+  import express from 'express';
+  import http from 'http';
+  import bodyParser from 'body-parser';
+  import cookieParser from 'cookie-parser';
+  import compression from 'compression';
+  import cors from 'cors';
+
+  const app = express();
+
+  app.use(cors({
+    credentials: true,
+  }))
+
+  app.use(compression());
+  app.use(cookieParser());
+  app.use(bodyParser.json());
+
+  const server = http.createServer(app);
+
+And we'll install required packages that we imported:
+  npm install express body-parser cookie-parser compression cors
+
+And after that we'll install their types! Because we're using typescript ;)
+  npm install -D @types/express @types/body-parser @types/cookie-parser @types/compression @types/cors
+
+Next, in index.ts we'll add a listener on a server and test it if its console.log-ing:
+  server.listen(8080, () => {
+    console.log('Server running on http://localhost:8080/');
+  });
+
+It works!
+
+Next, we'll add a MongoDB connection to our app.
+There's a little bit of a setup on MongoDB web dash to be done, to create a database, user and password for that user, and esentialy what we need is mongodb+srv string that we'll end up with, and we can add it in index.ts:
+  const MONGO_URL = 'mongodb+srv://vlad:JsaOuLxKbqthlmqF@cluster0.dbq7vxj.mongodb.net/?retryWrites=true&w=majority';
+
+Next, we'll install mongoose to interact with our db:
+  npm install mongoose
+
+...and we'll need its types:
+  npm i -D @types/mongoose
+
+...and we'll add an import:
+  import mongoose from 'mongoose';
+
+Finaly, we're going to initiate mongodb with this lines in index.ts:
+  mongoose.Promise = Promise;
+  mongoose.connect(MONGO_URL);
+  mongoose.connection.on('error', (error: Error) => console.log(error));
+
+Now lets create first database schema.
+Inside src folder we'll create db folder, and inside it we'll create file users.ts
+It will be our schema and mondel.
+Contents of that file will not be shown here, but it can be found already added in users.ts
+
+Now we'll add some helpers for authentication that will either encrypt the password, or create a random token. We'll create folder 'helpers' in our src folder, and create a index.ts file in it. You can find them there.
+
+Now we'll create authentication route. We'll first create 'controllers' folder in our 'src', and create in it file called authentication.ts, and we'll add some auth controllers there. Check them in that file.
+
+Up next, we'll provide middlewares. We'll create middleware folder inside sec folder, and add an index.ts file in it. We are also going to install new dependecy called lodash:
+  npm i lodash
+  npm i -D @types/lodash
+
+
+
+
