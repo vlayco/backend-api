@@ -20,8 +20,8 @@ app.use(bodyParser.json());
 
 const server = http.createServer(app);
 
-server.listen(process.env.SERVER_PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.SERVER_PORT}/`);
+server.listen(process.env.SERVER_PORT || 5000, () => {
+  console.log(`Server running on http://localhost:${process.env.SERVER_PORT || 5000}/`);
 });
 
 const MONGO_URL = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0.dbq7vxj.mongodb.net/?retryWrites=true&w=majority`;
