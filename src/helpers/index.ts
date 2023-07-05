@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-const SECRET = 'STRONG-SECRET';
+const SECRET = process.env.SECRET;
 
 // Randomizer method that simply 128 random byte in base64 so it is digestiable for our database.
 export const random = () => crypto.randomBytes(128).toString('base64');
